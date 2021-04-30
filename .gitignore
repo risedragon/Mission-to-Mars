@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 Practice.ipynb
 settings.json
+config.py
 
 # C extensions
 *.so
