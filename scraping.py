@@ -68,7 +68,22 @@ def mars_facts():
     df.set_index('Description', inplace=True)
 
     # Convert dataframe into HTML format, add bootstrap
-    return df.to_html()
+    return df.to_html(classes=['table','table-striped','table-hover'],border=0)
+
+def get_hemisphere(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    hemisphere_image_urls = []
+    try:
+        tags = soup(browser.html,'html.parser').find_all('div',class_='item')
+        urls_titles = [(tag.a['href'],tag.div.a.text.strip()) for tag in tags]
+        for product_url,title in urls_titles:
+            browser.visit(url + product_url)
+            img_url = soup(browser.html,'html.parser').find('div',class_='downloads').a['href']
+            hemisphere_image_urls.append(dict(img_url=url+img_url,title=title))
+    except:
+        return None
+    return hemisphere_image_urls
 
 def scrape_all():
     executable_path = {'executable_path': ChromeDriverManager().install()}
@@ -81,7 +96,8 @@ def scrape_all():
       "news_paragraph": news_paragraph,
       "featured_image": featured_image(browser),
       "facts": mars_facts(),
-      "last_modified": dt.datetime.now()
+      "last_modified": dt.datetime.now(),
+      "hemisphere_image_urls": get_hemisphere(browser)
     }
 
     browser.quit()

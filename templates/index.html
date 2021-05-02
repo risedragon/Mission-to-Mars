@@ -14,7 +14,7 @@
     <div class="container">
         <div class="jumbotron text-center">
             <h1>Mission to Mars</h1>
-            <p><a class="btn btn-primary btn-lg" href="/scrape"
+            <p><a class="btn btn-success btn-lg" href="/scrape"
                         role="button">Scrape New Data</a></p>
         </div>
         <div class="row" id="mars-news">
@@ -39,10 +39,33 @@
             </div>
             <div class="col-md-4">
                 <div class="row" id="mars-facts">
-                    <h4>Mars Facts</h4>
-                    {{ mars.facts | safe }}
+                    <h4 class="text-center">Mars Facts</h4>
+                    <div class="table-responsive">
+                        {{ mars.facts | safe }}
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="row" id='mars-hemisphere'>
+            <div class="text-center">
+                <h3>Mars Hemispheres</h3>
+            </div>
+        </div>
+        <div class="row">
+            {% for hemisphere in mars.hemisphere_image_urls %}
+                <a href="{{ hemisphere.img_url }}">
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <img src="{{ hemisphere.img_url }}" 
+                            alt="{{ hemisphere.title }}" 
+                            style="width:100%"
+                            class="img-thumbnail"
+                        >
+                        <div class="caption">
+                            <h5>{{ hemisphere.title }}</h5>
+                        </div>
+                    </div>
+                </a>  
+            {% endfor %}
         </div>
     </div>
 </body>
